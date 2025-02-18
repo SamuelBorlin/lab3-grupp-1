@@ -40,9 +40,9 @@ public class CarView extends JFrame{
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String framename, CarController cc){
+    public CarView(String frameName, CarController cc){
         this.carC = cc;
-        initComponents(framename);
+        initComponents(frameName);
     }
 
     // Sets everything in place and fits everything
@@ -107,6 +107,49 @@ public class CarView extends JFrame{
                 carC.gas(gasAmount);
             }
         });
+
+        brakeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                carC.brake(gasAmount); //can use the same value for simplicity's sake!
+            }
+        });
+
+        turboOnButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                carC.setTurboOn();
+            }
+        });
+
+        turboOffButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                carC.setTurboOff();
+            }
+        });
+
+        liftBedButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                carC.liftFlatbed(); //TODO: flatbed -doesn't- need to be tiltable, reimplement
+            }
+        });
+
+        lowerBedButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                carC.lowerFlatbed();
+            }
+        });
+
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                carC.startAllCars();
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                carC.stopAllCars();
+            }
+        });
+
 
         // Make the frame pack all it's components by respecting the sizes if possible.
         this.pack();
