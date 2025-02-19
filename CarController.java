@@ -21,15 +21,17 @@ public class CarController {
     // The frame that represents this instance View of the MVC pattern
     CarView frame;
     // A list of cars, modify if needed
-    // ArrayList<ACar> cars = new ArrayList<>();
+    ArrayList<Cars> cars = new ArrayList<>();
 
-    //methods:
+    // methods:
 
     public static void main(String[] args) {
         // Instance of this class
         CarController cc = new CarController();
 
-        // cc.cars.add(new Volvo240());
+        cc.cars.add(new Volvo240());
+        cc.cars.add(new Saab95());
+        cc.cars.add(new Scania());
 
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc);
@@ -38,28 +40,100 @@ public class CarController {
         cc.timer.start();
     }
 
-    /* Each step the TimerListener moves all the cars in the list and tells the
-    * view to update its images. Change this method to your needs.
-    * */
+    /*
+     * Each step the TimerListener moves all the cars in the list and tells the
+     * view to update its images. Change this method to your needs.
+     */
+
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
- /*           for (ACar car : cars) {
-                car.move();
+
+            for (Cars car : cars) {
+
                 int x = (int) Math.round(car.getPosition().getX());
                 int y = (int) Math.round(car.getPosition().getY());
-                frame.drawPanel.moveit(x, y);
-                // repaint() calls the paintComponent method of the panel
-                frame.drawPanel.repaint();
-            }*/
+
+                if (isCarOutOfBounds(x, y)) {
+                    car.stopEngine();
+                    car.turnLeft();
+                    car.turnLeft();
+                } else {
+                    car.move();
+                    frame.drawPanel.moveit(x, y);
+                    // repaint() calls the paintComponent method of the panel
+                    frame.drawPanel.repaint();
+                }
+
+            }
+
         }
     }
 
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-       /* for (ACar car : cars
-                ) {
+
+        for (Cars car : cars) {
             car.gas(gas);
-        }*/
+        }
     }
+
+    void brake(int amount) {
+        double brake = ((double) amount) / 100;
+
+        for (Cars car : cars) {
+            car.brake(brake);
+        }
+    }
+
+    void startCars() {
+        for (Cars car : cars) {
+            car.startEngine();
+        }
+        System.out.println("All cars started");
+        System.err.println(cars.size());
+    }
+
+    void stopCars() {
+        for (Cars car : cars) {
+            car.stopEngine();
+        }
+    }
+
+    void turboOn() {
+        for (Cars car : cars) {
+            if (car instanceof Saab95) {
+                ((Saab95) car).setTurboOn();
+            }
+        }
+    }
+
+    void turboOff() {
+        for (Cars car : cars) {
+            if (car instanceof Saab95) {
+                ((Saab95) car).setTurboOff();
+            }
+        }
+    }
+
+    void liftBed() {
+        for (Cars car : cars) {
+            if (car instanceof Scania) {
+                ((Scania) car).raiseRamp();
+            }
+        }
+    }
+
+    void lowerBed() {
+        for (Cars car : cars) {
+            if (car instanceof Scania) {
+                ((Scania) car).lowerRamp();
+            }
+        }
+    }
+
+    private boolean isCarOutOfBounds(int x, int y) {
+        return x < 0 || x > 800 || y < 0 || y > 500;
+    }
+
 }
