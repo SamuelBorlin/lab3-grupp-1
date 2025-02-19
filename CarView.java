@@ -40,9 +40,9 @@ public class CarView extends JFrame{
     JButton stopButton = new JButton("Stop all cars");
 
     // Constructor
-    public CarView(String frameName, CarController cc){
+    public CarView(String framename, CarController cc){
         this.carC = cc;
-        initComponents(frameName);
+        initComponents(framename);
     }
 
     // Sets everything in place and fits everything
@@ -100,7 +100,6 @@ public class CarView extends JFrame{
         this.add(stopButton);
 
         // This actionListener is for the gas button only
-        // TODO: Create more for each component as necessary
         gasButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,47 +107,17 @@ public class CarView extends JFrame{
             }
         });
 
-        brakeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                carC.brake(gasAmount); //can use the same value for simplicity's sake!
-            }
-        });
+        // These actionListeners are for Starting and Stopping
+        startButton.addActionListener(e -> carC.startAllCars());
+        stopButton.addActionListener(e -> carC.stopAllCars());
 
-        turboOnButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                carC.setTurboOn();
-            }
-        });
+        // These actionListeners are for turning Turbo on and off
+        turboOnButton.addActionListener(e -> carC.enableTurbo());
+        turboOffButton.addActionListener(e -> carC.disableTurbo());
 
-        turboOffButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                carC.setTurboOff();
-            }
-        });
-
-        liftBedButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                carC.liftFlatbed(); //TODO: flatbed -doesn't- need to be tiltable, reimplement
-            }
-        });
-
-        lowerBedButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                carC.lowerFlatbed();
-            }
-        });
-
-        startButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                carC.startAllCars();
-            }
-        });
-
-        stopButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                carC.stopAllCars();
-            }
-        });
+        // These actionListeners raise and lowers Scania's flatbed.
+        liftBedButton.addActionListener(e -> carC.raiseBed());
+        lowerBedButton.addActionListener(e -> carC.lowerBed());
 
 
         // Make the frame pack all it's components by respecting the sizes if possible.

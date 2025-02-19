@@ -4,9 +4,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /*
-* This class represents the Controller part in the MVC pattern.
-* Its responsibilities are to listen to the View and responds in an appropriate manner by
-* modifying the model state and the updating the view.
+ * This class represents the Controller part in the MVC pattern.
+ * Its responsibilities are to listen to the View and responds in an appropriate manner by
+ * modifying the model state and the updating the view.
  */
 
 public class CarController {
@@ -29,9 +29,14 @@ public class CarController {
         // Instance of this class
         CarController cc = new CarController();
 
-        cc.cars.add(new Volvo240());
-        cc.cars.add(new Saab95());
-        cc.cars.add(new Scania());
+        // Instances of cars
+        Volvo240 volvo240 = new Volvo240();
+        Saab95 saab95 = new Saab95();
+        Scania scania = new Scania();
+
+        cc.cars.add(volvo240);
+        cc.cars.add(saab95);
+        cc.cars.add(scania);
 
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc);
@@ -41,95 +46,79 @@ public class CarController {
     }
 
     /* Each step the TimerListener moves all the cars in the list and tells the
-    * view to update its images. Change this method to your needs.
-    * */
+     * view to update its images. Change this method to your needs.
+     * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            for (int i = 0; i < cars.size(); i++) {
-                Cars car = cars.get(i);
+            for (Cars car : cars) {
                 car.move();
                 int x = (int) Math.round(car.getPosition().getX());
                 int y = (int) Math.round(car.getPosition().getY());
 
-                if (x < 0 || x > frame.getWidth() - 100) {
+                if (x > frame.getWidth() - 100 || x < 0) {
                     car.stopEngine();
                     car.turnLeft();
-                    car.turnLeft();
+                    car.turnLeft(); // Custom method to reverse direction
                     car.startEngine();
                 }
 
-                if (car instanceof Volvo240){
-                    if (x == frame.drawPanel.volvoWorkshopPoint.x && y == frame.drawPanel.volvoWorkshopPoint.y) {
-                        car.stopEngine();
-                        // TODO: Load garage
-
-                    }
-                }
-
-                frame.drawPanel.moveCar(i, x, y);
+                frame.drawPanel.moveCar(car, x, y);
                 // repaint() calls the paintComponent method of the panel
+                frame.drawPanel.repaint();
             }
-            frame.drawPanel.repaint();
         }
     }
 
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-       for (Cars car : cars
-                ) {
+        for (Cars car : cars) {
             car.gas(gas);
         }
     }
 
-    void brake(int amount){
-        double brake = ((double) amount) / 100;
-        for (Cars car : cars){
-            car.brake(brake);
-        }
-    }
-
-    void startAllCars(){
-        for (Cars car : cars){
+    void startAllCars() {
+        for (Cars car : cars) {
             car.startEngine();
         }
     }
 
-    void stopAllCars(){
-        for (Cars car : cars){
+    void stopAllCars() {
+        for (Cars car : cars) {
             car.stopEngine();
         }
     }
 
-    void setTurboOn(){
-        for (Cars car : cars){
-            if (car instanceof Saab95){
+    void enableTurbo() {
+        for (Cars car : cars) {
+            if (car instanceof Saab95) {
                 ((Saab95) car).setTurboOn();
             }
         }
     }
 
-    void setTurboOff(){
-        for (Cars car : cars){
-            if (car instanceof Saab95){
+    void disableTurbo() {
+        for (Cars car : cars) {
+            if (car instanceof Saab95) {
                 ((Saab95) car).setTurboOff();
             }
         }
     }
 
-    void liftFlatbed(){
-        for (Cars car : cars){
-            if (car instanceof Scania){
+    void raiseBed() {
+        for (Cars car : cars) {
+            if (car instanceof Scania) {
                 ((Scania) car).raiseRamp();
             }
         }
     }
 
-    void lowerFlatbed(){
-        for (Cars car : cars){
-            if (car instanceof Scania){
+    void lowerBed() {
+        for (Cars car : cars) {
+            if (car instanceof Scania) {
                 ((Scania) car).lowerRamp();
             }
         }
     }
+
 }
