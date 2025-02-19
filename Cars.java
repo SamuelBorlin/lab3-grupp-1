@@ -71,6 +71,9 @@ public abstract class Cars implements Movable {
         if (isLoaded) {
             throw new IllegalArgumentException("Can't start engine while loaded");
         }
+        if (currentSpeed > 0) {
+            throw new IllegalArgumentException("Engine is already on");
+        }
         currentSpeed = 0.1;
     }
 
@@ -96,12 +99,14 @@ public abstract class Cars implements Movable {
         if (amount < 0 || amount > 1) {
             throw new IllegalArgumentException("amount must be between 0 and 1");
         }
-        System.out.println("Gas");
+        if (currentSpeed == 0) {
+            throw new IllegalArgumentException("Engine must be between on before gassing");
+        }
+
         incrementSpeed(amount);
     }
 
     public void brake(double amount) {
-        System.out.println("brake");
         if (amount < 0 || amount > 1) {
             throw new IllegalArgumentException("amount must be between 0 and 1");
         }
@@ -127,9 +132,9 @@ public abstract class Cars implements Movable {
         }
         switch (direction) {
             case NORTH -> direction = Direction.WEST;
-            case EAST -> direction = Direction.SOUTH;
+            case EAST -> direction = Direction.NORTH;
             case SOUTH -> direction = Direction.EAST;
-            case WEST -> direction = Direction.NORTH;
+            case WEST -> direction = Direction.SOUTH;
             default -> {
             }
         }

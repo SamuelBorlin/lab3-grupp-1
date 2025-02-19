@@ -1,4 +1,6 @@
 import javax.swing.*;
+
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -30,8 +32,14 @@ public class CarController {
         CarController cc = new CarController();
 
         cc.cars.add(new Volvo240());
-        cc.cars.add(new Saab95());
-        cc.cars.add(new Scania());
+
+        Saab95 saab = new Saab95();
+        saab.setPosition(new Point(0, 100));
+        cc.cars.add(saab);
+
+        Scania scania = new Scania();
+        scania.setPosition(new Point(0, 200));
+        cc.cars.add(scania);
 
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc);
@@ -54,16 +62,28 @@ public class CarController {
                 int y = (int) Math.round(car.getPosition().getY());
 
                 if (isCarOutOfBounds(x, y)) {
-                    car.stopEngine();
                     car.turnLeft();
                     car.turnLeft();
-                } else {
-                    car.move();
-                    frame.drawPanel.moveit(x, y);
-                    // repaint() calls the paintComponent method of the panel
-                    frame.drawPanel.repaint();
                 }
 
+                if (car instanceof Volvo240) {
+                    int x2 = 300;
+                    int y2 = 300;
+                    double distance = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
+                    if (distance < 25) {
+                        car.stopEngine();
+                        frame.drawPanel.loadCarToWorkshop();
+                        cars.remove(car);
+                        break; // break out of the loop
+                    }
+                }
+
+                car.move();
+
+                int index = cars.indexOf(car);
+                frame.drawPanel.moveit(index, x, y);
+                // repaint() calls the paintComponent method of the panel
+                frame.drawPanel.repaint();
             }
 
         }
@@ -88,10 +108,12 @@ public class CarController {
 
     void startCars() {
         for (Cars car : cars) {
-            car.startEngine();
+            try {
+                car.startEngine();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
-        System.out.println("All cars started");
-        System.err.println(cars.size());
     }
 
     void stopCars() {
@@ -132,8 +154,20 @@ public class CarController {
         }
     }
 
+    void turnRight() {
+        for (Cars car : cars) {
+            car.turnRight();
+        }
+    }
+
+    void turnLeft() {
+        for (Cars car : cars) {
+            car.turnLeft();
+        }
+    }
+
     private boolean isCarOutOfBounds(int x, int y) {
-        return x < 0 || x > 800 || y < 0 || y > 500;
+        return x < 0 || x > 700 || y < 0 || y > 500;
     }
 
 }

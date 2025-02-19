@@ -6,6 +6,7 @@ public class Saab95 extends Cars {
 
     public Saab95() {
         super(2, 125, Color.RED, "Saab95");
+
     }
 
     protected void setTurboOn() {
