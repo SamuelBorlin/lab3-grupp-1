@@ -45,7 +45,6 @@ public abstract class Cars implements Movable {
         return currentSpeed;
     }
 
-    // test-getter
     public Point getPosition() {
         return new Point(position);
     }
@@ -60,7 +59,7 @@ public abstract class Cars implements Movable {
 
     // set position
     /* Ev Change later */
-    protected void setPosition(Point position) {
+    public void setPosition(Point position) {
         if (position == null) {
             throw new IllegalArgumentException("Position cannot be null");
         }
