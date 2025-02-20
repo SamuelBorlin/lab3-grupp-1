@@ -1,0 +1,36 @@
+CarController
+- kör bilar
+- hanterar alla knappar
+- kollar bilens position 
+- uppdaterar fönstret där bilen rör sig, flyttar bilar i fönstret
+
+
+CarView
+- skapar alla knappar och fönstret
+- kopplar knappar till  metoder, kallar på metoder i CarController 
+
+DrawPanel
+- flyttar på bil position
+- laddar till CarWorkShop (tar bort bild)
+- skapar frame
+- skapar bilder till bilar
+- skapar punkter till bilar
+
+
+
+skapar DrawPanel
+skickar bilder, sätt positioner 
+
+updateFrame
+
+
+
+
+
+Plan
+1. Skapa en ny klass ... som har hand om operationer (förändringar i systemet, koordinater)
+2. Flytta över TimerListener till nya klassen. Metoder som erhåller koordinater
+3. Skapa ett interface för CarController för att kunna ha olika carcontrollers. Minskar även beroendet från CarView. DIP, dependency inversion principle
+4. Generalisera bil relaterade metoder, t.ex DrawPanel, kunna skicka in bilar och punkter som argument. 
+5. Implementera Garage från tidigare kod.   
+6. Interface för hasPosition, för bil och verkstad. Då kan man lätt beräkna avstånd. 
