@@ -1,4 +1,6 @@
 import javax.swing.*;
+
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -8,7 +10,6 @@ import java.util.ArrayList;
 * It's responsibilities is to listen to the View and responds in a appropriate manner by
 * modifying the model state and the updating the view.
  */
-
 public class CarController {
     // member fields:
 
@@ -21,15 +22,23 @@ public class CarController {
     // The frame that represents this instance View of the MVC pattern
     CarView frame;
     // A list of cars, modify if needed
-    // ArrayList<ACar> cars = new ArrayList<>();
+    ArrayList<Cars> cars = new ArrayList<>();
 
-    //methods:
+    // methods:
 
     public static void main(String[] args) {
         // Instance of this class
         CarController cc = new CarController();
 
-        // cc.cars.add(new Volvo240());
+        cc.cars.add(new Volvo240());
+
+        Saab95 saab = new Saab95();
+        saab.setPosition(new Point(0, 100));
+        cc.cars.add(saab);
+
+        Scania scania = new Scania();
+        scania.setPosition(new Point(0, 200));
+        cc.cars.add(scania);
 
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc);
@@ -38,28 +47,126 @@ public class CarController {
         cc.timer.start();
     }
 
-    /* Each step the TimerListener moves all the cars in the list and tells the
-    * view to update its images. Change this method to your needs.
-    * */
+    /*
+     * Each step the TimerListener moves all the cars in the list and tells the
+     * view to update its images. Change this method to your needs.
+     */
+
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
- /*           for (ACar car : cars) {
-                car.move();
+
+            for (Cars car : cars) {
+
                 int x = (int) Math.round(car.getPosition().getX());
                 int y = (int) Math.round(car.getPosition().getY());
-                frame.drawPanel.moveit(x, y);
+
+                if (isCarOutOfBounds(x, y)) {
+                    car.turnLeft();
+                    car.turnLeft();
+                }
+
+                if (car instanceof Volvo240) {
+                    int x2 = 300;
+                    int y2 = 300;
+                    double distance = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
+                    if (distance < 25) {
+                        car.stopEngine();
+                        frame.drawPanel.loadCarToWorkshop();
+                        cars.remove(car);
+                        break; // break out of the loop
+                    }
+                }
+
+                car.move();
+
+                int index = cars.indexOf(car);
+                frame.drawPanel.moveit(index, x, y);
                 // repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
-            }*/
+            }
+
         }
     }
 
     // Calls the gas method for each car once
     void gas(int amount) {
         double gas = ((double) amount) / 100;
-       /* for (ACar car : cars
-                ) {
+
+        for (Cars car : cars) {
             car.gas(gas);
-        }*/
+        }
     }
+
+    void brake(int amount) {
+        double brake = ((double) amount) / 100;
+
+        for (Cars car : cars) {
+            car.brake(brake);
+        }
+    }
+
+    void startCars() {
+        for (Cars car : cars) {
+            try {
+                car.startEngine();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    void stopCars() {
+        for (Cars car : cars) {
+            car.stopEngine();
+        }
+    }
+
+    void turboOn() {
+        for (Cars car : cars) {
+            if (car instanceof Saab95) {
+                ((Saab95) car).setTurboOn();
+            }
+        }
+    }
+
+    void turboOff() {
+        for (Cars car : cars) {
+            if (car instanceof Saab95) {
+                ((Saab95) car).setTurboOff();
+            }
+        }
+    }
+
+    void liftBed() {
+        for (Cars car : cars) {
+            if (car instanceof Scania) {
+                ((Scania) car).raiseRamp();
+            }
+        }
+    }
+
+    void lowerBed() {
+        for (Cars car : cars) {
+            if (car instanceof Scania) {
+                ((Scania) car).lowerRamp();
+            }
+        }
+    }
+
+    void turnRight() {
+        for (Cars car : cars) {
+            car.turnRight();
+        }
+    }
+
+    void turnLeft() {
+        for (Cars car : cars) {
+            car.turnLeft();
+        }
+    }
+
+    private boolean isCarOutOfBounds(int x, int y) {
+        return x < 0 || x > 700 || y < 0 || y > 500;
+    }
+
 }
