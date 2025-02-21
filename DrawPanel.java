@@ -28,6 +28,7 @@ public class DrawPanel extends JPanel {
 
     void loadCarToWorkshop() {
         carImages.remove(0);
+        carPoints.remove(0);
     }
 
     // Initializes the panel and reads the images
