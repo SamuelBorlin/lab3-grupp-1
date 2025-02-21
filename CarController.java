@@ -30,13 +30,14 @@ public class CarController {
         // Instance of this class
         CarController cc = new CarController();
 
-        cc.cars.add(new Volvo240());
+        Cars volvo = new Volvo240();
+        cc.cars.add(volvo);
 
-        Saab95 saab = new Saab95();
+        Cars saab = new Saab95();
         saab.setPosition(new Point(0, 100));
         cc.cars.add(saab);
 
-        Scania scania = new Scania();
+        Cars scania = new Scania();
         scania.setPosition(new Point(0, 200));
         cc.cars.add(scania);
 
