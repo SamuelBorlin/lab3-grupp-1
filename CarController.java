@@ -123,32 +123,32 @@ public class CarController {
 
     void turboOn() {
         for (Cars car : cars) {
-            if (car instanceof Saab95) {
-                ((Saab95) car).setTurboOn();
+            if (car instanceof HasTurbo) {
+                ((HasTurbo) car).setTurboOn();
             }
         }
     }
 
     void turboOff() {
         for (Cars car : cars) {
-            if (car instanceof Saab95) {
-                ((Saab95) car).setTurboOff();
+            if (car instanceof HasTurbo) {
+                ((HasTurbo) car).setTurboOff();
             }
         }
     }
 
     void liftBed() {
         for (Cars car : cars) {
-            if (car instanceof Scania) {
-                ((Scania) car).raiseRamp();
+            if (car instanceof HasFlatbed) {
+                ((HasFlatbed) car).raiseRamp();
             }
         }
     }
 
     void lowerBed() {
         for (Cars car : cars) {
-            if (car instanceof Scania) {
-                ((Scania) car).lowerRamp();
+            if (car instanceof HasFlatbed) {
+                ((HasFlatbed) car).lowerRamp();
             }
         }
     }

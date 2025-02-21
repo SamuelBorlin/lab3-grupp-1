@@ -1,7 +1,7 @@
 
 import java.awt.*;
 
-public class Saab95 extends Cars {
+public class Saab95 extends Cars implements HasTurbo {
     private boolean turboOn = false;
 
     public Saab95() {
