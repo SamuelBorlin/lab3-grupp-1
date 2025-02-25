@@ -1,33 +1,32 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 // This panel represents the animated part of the view with the car images.
 
-public class DrawPanel extends JPanel {
-    // To keep track of a several cars and their positions
-    private final ArrayList<Cars> cars = new ArrayList<>();
-    private final ArrayList<Point> carPositions = new ArrayList<>();
+public class DrawPanel extends JPanel implements ICarPoints {
 
+    // TODO: Refactor Images into Interface Array for ActionManager and DrawPanel
+    List<BufferedImage> carImages;
 
-    // All images
-    BufferedImage volvoImage;
-    BufferedImage saabImage;
-    BufferedImage scaniaImage;
     BufferedImage volvoWorkshopImage;
     Point volvoWorkshopPoint = new Point(300, 300);
 
-    void moveCar(Cars car, int x, int y) {
-        int index = cars.indexOf(car);
-        if (index != -1) {
-            carPositions.get(index).setLocation(x, y);
-        }
-    }
+//    void moveit(int index, int x, int y) {
+//
+//        carPoints.get(index).x = x;
+//        carPoints.get(index).y = y;
+//
+//    }
+
+//    void loadCarToWorkshop() {
+//        carImages.remove(0);
+//        carPoints.remove(0);
+//    }
 
     // Initializes the panel and reads the images
     public DrawPanel(int x, int y) {
@@ -36,43 +35,42 @@ public class DrawPanel extends JPanel {
         this.setBackground(Color.green);
         // Print an error message in case file is not found with a try/catch block
         try {
-            // Remember to right-click src New -> Package -> name: pics -> MOVE *.jpg to pics.
+            // You can remove the "pics" part if running outside of IntelliJ and
+            // everything is in the same main folder.
+            // volvoImage = ImageIO.read(new File("Volvo240.jpg"));
+
+            // Remember to right-click src New -> Package -> name: pics -> MOVE *.jpg to
+            // pics.
             // if you are starting in IntelliJ.
-            volvoImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg"));
-            saabImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg"));
-            scaniaImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Scania.jpg"));
-            volvoWorkshopImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg"));
+
+            BufferedImage volvoImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg")));
+            BufferedImage saabImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg")));
+            BufferedImage scaniaImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/Scania.jpg")));
+
+            carImages = new java.util.ArrayList<>(java.util.Arrays.asList(volvoImage, saabImage, scaniaImage));
+            /*
+             * carPoints.add(new Point(0, 0));
+             * carPoints.add(new Point(0, 100));
+             * carPoints.add(new Point(0, 200));
+             */
+
+            volvoWorkshopImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg")));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
     }
 
-    public void addCar(Cars car, int x, int y) {
-        cars.add(car);
-        carPositions.add(new Point(x, y));  // Initial position
-    }
-
     // This method is called each time the panel updates/refreshes/repaints itself
-    // TODO: Change to suit your needs.
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (int i = 0; i < cars.size(); i++) {
-            BufferedImage carImage = getCarImage(cars.get(i));
-            Point position = carPositions.get(i);
-            g.drawImage(carImage, position.x, position.y, null);
-        }
-    }
 
-    private BufferedImage getCarImage(Cars car) {
-        if (car instanceof Volvo240) {
-            return volvoImage;
-        } else if (car instanceof Saab95) {
-            return saabImage;
-        } else if (car instanceof Scania) {
-            return scaniaImage;
+        for (int i = 0; i < carImages.size(); i++) {
+            g.drawImage(carImages.get(i), carPoints.get(i).x, carPoints.get(i).y, null);
         }
-        return null;
+
+        // more info on the parameters
+        g.drawImage(volvoWorkshopImage, volvoWorkshopPoint.x, volvoWorkshopPoint.y, null);
     }
 }
