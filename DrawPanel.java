@@ -1,35 +1,33 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.List;
+import java.util.Objects;
 
 // This panel represents the animated part of the view with the car images.
 
-public class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel implements ICarPoints {
 
     // Just a single image, TODO: Generalize
     List<BufferedImage> carImages;
-    List<Point> carPoints = new java.util.ArrayList<>(
-            java.util.Arrays.asList(new Point(0, 0), new Point(0, 100), new Point(0, 200)));
 
     BufferedImage volvoWorkshopImage;
     Point volvoWorkshopPoint = new Point(300, 300);
 
     // TODO: Make this general for all cars
-    void moveit(int index, int x, int y) {
+//    void moveit(int index, int x, int y) {
+//
+//        carPoints.get(index).x = x;
+//        carPoints.get(index).y = y;
+//
+//    }
 
-        carPoints.get(index).x = x;
-        carPoints.get(index).y = y;
-
-    }
-
-    void loadCarToWorkshop() {
-        carImages.remove(0);
-        carPoints.remove(0);
-    }
+//    void loadCarToWorkshop() {
+//        carImages.remove(0);
+//        carPoints.remove(0);
+//    }
 
     // Initializes the panel and reads the images
     public DrawPanel(int x, int y) {
@@ -42,12 +40,14 @@ public class DrawPanel extends JPanel {
             // everything is in the same main folder.
             // volvoImage = ImageIO.read(new File("Volvo240.jpg"));
 
-            // Rememember to rightclick src New -> Package -> name: pics -> MOVE *.jpg to
+            // Remember to right-click src New -> Package -> name: pics -> MOVE *.jpg to
             // pics.
             // if you are starting in IntelliJ.
-            BufferedImage volvoImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg"));
-            BufferedImage saabImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg"));
-            BufferedImage scaniaImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Scania.jpg"));
+
+            // TODO: Refactor Images into Interface Array for ActionManager and DrawPanel
+            BufferedImage volvoImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg")));
+            BufferedImage saabImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg")));
+            BufferedImage scaniaImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/Scania.jpg")));
 
             carImages = new java.util.ArrayList<>(java.util.Arrays.asList(volvoImage, saabImage, scaniaImage));
             /*
@@ -56,7 +56,7 @@ public class DrawPanel extends JPanel {
              * carPoints.add(new Point(0, 200));
              */
 
-            volvoWorkshopImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg"));
+            volvoWorkshopImage = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg")));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
