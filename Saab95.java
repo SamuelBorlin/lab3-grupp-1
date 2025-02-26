@@ -1,18 +1,18 @@
 
 import java.awt.*;
 
-public class Saab95 extends Cars {
+public class Saab95 extends Cars implements IHasTurbo {
     boolean turboOn = false;
 
     public Saab95() {
         super(2, 125, Color.RED, "Saab95");
     }
 
-    protected void setTurboOn() {
+    public void setTurboOn() {
         turboOn = true;
     }
 
-    protected void setTurboOff() {
+    public void setTurboOff() {
         turboOn = false;
     }
 

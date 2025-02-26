@@ -1,5 +1,4 @@
-
-public interface HasFlatbed {
+public interface IHasFlatbed {
     void raiseRamp();
 
     void lowerRamp();

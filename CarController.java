@@ -119,7 +119,7 @@ public class CarController implements ICarsArrayList {
 
     void turboOn() {
         for (Cars car : cars) {
-            if (car instanceof Saab95) {
+            if (car instanceof IHasTurbo) {
                 ((Saab95) car).setTurboOn();
             }
         }
@@ -127,7 +127,7 @@ public class CarController implements ICarsArrayList {
 
     void turboOff() {
         for (Cars car : cars) {
-            if (car instanceof Saab95) {
+            if (car instanceof IHasTurbo) {
                 ((Saab95) car).setTurboOff();
             }
         }
@@ -135,7 +135,7 @@ public class CarController implements ICarsArrayList {
 
     void liftBed() {
         for (Cars car : cars) {
-            if (car instanceof Scania) {
+            if (car instanceof IHasFlatbed) {
                 ((Scania) car).raiseRamp();
             }
         }
@@ -143,7 +143,7 @@ public class CarController implements ICarsArrayList {
 
     void lowerBed() {
         for (Cars car : cars) {
-            if (car instanceof Scania) {
+            if (car instanceof IHasFlatbed) {
                 ((Scania) car).lowerRamp();
             }
         }
